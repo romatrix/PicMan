@@ -6,6 +6,7 @@
 //#include <string>
 //#include <array>
 #include "shasumfile.h"
+#include "shasumfilemanager.h"
 
 //std::string exec(const char* cmd) {
 //    std::array<char, 128> buffer;
@@ -24,7 +25,9 @@
 
 int main()
 {
-    std::cout << ShaSumFile("~/Pictures/", "DSC_2864.jpg").getSha() << "|" << std::endl;
+    ShaSumFileManager s("dupa.txt");
+    s.scanDirectory("~");
+    //std::cout << ShaSumFile("~/Pictures/", "DSC_2864.jpg").getSha() << "|" << std::endl;
     //std::cout << "Hello World! " << exec("sha256sum ~/Pictures/DSC_2864.jpg") << std::endl;
     return 0;
 }
