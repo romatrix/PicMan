@@ -9,14 +9,23 @@ bool ShaSumFileManager::scanDirectory(const std::string &path)
     std::stringstream ss = SystemCmd::execute("find " + path + " -iname '*.jpg' ");
 
     std::cout << ss.str();
+    // true;
 
-    while(!ss.bad()){
+    std::cout << std::endl;
+
+    while(ss){
         std::string line;
         std::getline(ss, line);
+
+        if(!line.length()){
+            break;
+        }
 
         int pos = line.find_last_of('/');
         std::string file = line.substr(pos + 1);
         std::string directory = line.substr(0, pos);
+        std::cout << line.length() << " pos: " << pos << " directory:" << directory << " file:" << file <<  std::endl;
+
         ShaSumFile sha(directory, file);
 
         if(sha.getSha().length()){
