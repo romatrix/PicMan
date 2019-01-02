@@ -6,9 +6,11 @@ CONFIG -= qt
 SOURCES += main.cpp \
     shasumfile.cpp \
     shasumfilemanager.cpp \
-    systemcmd.cpp
+    systemcmd.cpp \
+    settingsfile.cpp
 
 HEADERS += \
     shasumfile.h \
     shasumfilemanager.h \
-    systemcmd.h
+    systemcmd.h \
+    settingsfile.h
