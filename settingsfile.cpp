@@ -74,20 +74,6 @@ vector<string> SettingsFile::getVariable(string sectionName, string variableName
     return ret;
 }
 
-
-//void SettingsFile::parseLine(std::string line, std::string &section, std::pair<std::string, std::string>& entry )
-//{
-//    trim(line);
-//    if(line[0] == '#'){
-//        return;
-//    }
-//    if(line[0] == '[' && line[line.length() - 1] == ']'){
-//        std::string sectionName = line.substr(1, line.length() - 2);
-//        sections[sectionName]=SectionEntry
-//    }
-
-//}
-
 void SettingsFile::load()
 {
     std::ifstream stream;
@@ -124,12 +110,9 @@ void SettingsFile::load()
                 }
                 std::string varName = line.substr(0, pos);
                 std::string value = line.substr(pos + 1);
-                //sections[sectionName].insert({name,{name, value}});
                 sections[sectionName][varName].insert(value);
                 std::cout << "Adding var:" << varName << "=" << value << std::endl;
             }
-            //std::getline(stream, m_path, ',');
-            //std::getline(stream, m_fileName, ',');
         }
     }catch(...){
 
@@ -155,9 +138,6 @@ void SettingsFile::store()
                 cout << "Adding var:" << varName << "=" << value << endl;
                 stream << varName << '=' << value << endl;
             }
-            //const std::string& varName = var.first;
-            //const std::string& value = var.second;
-            //stream << varName << '=' << value << std::endl;
         }
     }
 
