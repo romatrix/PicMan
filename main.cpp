@@ -1,39 +1,28 @@
 #include <iostream>
-//#include <cstdio>
-//#include <iostream>
-//#include <memory>
-//#include <stdexcept>
-//#include <string>
-//#include <array>
 #include "shasumfile.h"
 #include "shasumfilemanager.h"
 #include "settingsfile.h"
+#include "systemcmd.h"
 
-//std::string exec(const char* cmd) {
-//    std::array<char, 128> buffer;
-//    std::string result;
-//    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-//    if (!pipe) throw std::runtime_error("popen() failed!");
-//    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr){
-//        result += buffer.data();
-//    }
-//    return result;
-//}
-
-//class ShaSumFile{
-
-//};
+#include <unordered_set>
 
 int main()
 {
-    SettingsFile sf("settings.txt");
+//    SettingsFile sf("settings.txt");
 
-    sf.addVariable("dupa", "var", "12345");
-    std::cout << "var:" << sf.getVariable("dupa1", "var").at(0) << std::endl;
-    //ShaSumFileManager s("dupa.txt");
-    //s.scanDirectory("~");
+//    sf.addVariable("dupa", "var", "12345");
+//    std::cout << "var:" << sf.getVariable("dupa1", "var").at(0) << std::endl;
+    //std::stringstream ss = SystemCmd::execute("exif -t DateTimeOriginal ~/Pictures/2018/czerwiec/torun/DSC_5524.JPG | grep 'Value\\|^\\./'");
+    //std::cout << ss.str() << std::endl;
 
-    //std::cout << ShaSumFile("~/Pictures/", "DSC_2864.jpg").getSha() << "|" << std::endl;
+    ShaSumFileManager s("dupa.txt");
+    s.scanDirectory("~/Pictures/2017");
+    s.storeCache();
+
+    //ShaSumFile s("~/Pictures", "DSC 2864.jpg");
+
+
+    //std::cout << s.getSha() << "|" << s.getCreationDate() << " " << std::endl;
     //std::cout << "Hello World! " << exec("sha256sum ~/Pictures/DSC_2864.jpg") << std::endl;
     return 0;
 }

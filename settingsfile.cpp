@@ -46,12 +46,12 @@ static inline std::string trim_copy(std::string s) {
 
 SettingsFile::SettingsFile(std::string file): m_file(file)
 {
-    load();
+    //load();
 }
 
 SettingsFile::~SettingsFile()
 {
-    store();
+    //store();
 }
 
 void SettingsFile::addVariable(std::string sectionName, std::string variableName, std::string value)

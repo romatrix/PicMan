@@ -19,12 +19,12 @@ public:
     void addVariable(std::string section, std::string variable, std::string value);
     vector<string> getVariable(string sectionName, string variableName) const;
     const SectionEntry getSection(std::string section);
+    void store();
     private:
     //void parseLine(std::string line);
     void load();
-    void store();
 private:
-    std::unordered_map<string, map<string, set<string>> > sections;
+    std::unordered_map<string, unordered_map<string, set<string>> > sections;
     std::string m_file;
 };
 

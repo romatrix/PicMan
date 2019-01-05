@@ -3,21 +3,32 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 
 class ShaSumFile
 {
 public:
-    ShaSumFile(std::ifstream &stream);
+//    ShaSumFile(std::ifstream &stream);
     ShaSumFile(const std::string& path, const std::string& fileName): m_path(path), m_fileName(fileName){}
     ShaSumFile(const std::string& path, const std::string& fileName, const std::string sha): m_path(path), m_fileName(fileName), m_sha(sha){}
+
     const std::string& getSha();
+    const std::string& getCreationDate();
+    const std::string& getFileName() const;
+    const std::string& getDirectoryName() const;
+
+
     bool store(std::ofstream &stream) const;
     void load(std::ifstream &stream);
     std::string getFullPath()const { return "\"" + m_path + "/" + m_fileName + "\""; }
+    int addDuplicate(ShaSumFile&& duplicate);
+    const std::vector<ShaSumFile> &getDuplicates() const;
 private:
-    std::string m_path;
-    std::string m_fileName;
+    const std::string& m_path;
+    const std::string& m_fileName;
     std::string m_sha;
+    std::string m_creationDate;
+    std::vector<ShaSumFile> m_duplicates;
 };
 
 #endif // SHASUMFILE_H

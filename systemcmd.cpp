@@ -9,7 +9,6 @@ SystemCmd::SystemCmd()
 
 std::stringstream SystemCmd::execute(const std::string cmd){
     std::array<char, 128> buffer;
-    //const std::string cmd = "sha256sum " + m_path + "/" + m_fileName;
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
 
     if (!pipe){
