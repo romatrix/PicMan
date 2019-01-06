@@ -8,9 +8,18 @@
 class ShaSumFile
 {
 public:
-//    ShaSumFile(std::ifstream &stream);
+    //ShaSumFile(ShaSumFile &&file);
     ShaSumFile(const std::string& path, const std::string& fileName): m_path(path), m_fileName(fileName){}
-    ShaSumFile(const std::string& path, const std::string& fileName, const std::string sha): m_path(path), m_fileName(fileName), m_sha(sha){}
+//    ShaSumFile(const std::string& path, const std::string& fileName, const std::string sha): m_path(path), m_fileName(fileName), m_sha(sha){}
+    ShaSumFile(const std::string& path,
+               const std::string& fileName,
+               const std::string& sha,
+               const std::string& creationDate):
+                    m_path(path),
+                    m_fileName(fileName),
+                    m_sha(sha),
+                    m_creationDate(creationDate){}
+    //ShaSumFile &operator =(ShaSumFile &&file);
 
     const std::string& getSha();
     const std::string& getCreationDate();

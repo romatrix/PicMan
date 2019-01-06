@@ -74,7 +74,7 @@ vector<string> SettingsFile::getVariable(string sectionName, string variableName
     return ret;
 }
 
-void SettingsFile::load()
+void SettingsFile::load(std::function<void(const std::string& section, const std::string& name, const std::string& value)> callback)
 {
     std::ifstream stream;
     stream.exceptions(std::ifstream::failbit);
@@ -102,6 +102,11 @@ void SettingsFile::load()
             if(line[0] == '[' && line[line.length() - 1] == ']'){
                 sectionName = line.substr(1, line.length() - 2);
                 std::cout << "Found section:" << sectionName << std::endl;
+
+                std::string varName;
+                std::string value;
+
+                callback(sectionName, varName, value);
             } else {
                 int pos = line.find_first_of('=');
                 if(pos == std::string::npos){
@@ -111,6 +116,9 @@ void SettingsFile::load()
                 std::string varName = line.substr(0, pos);
                 std::string value = line.substr(pos + 1);
                 sections[sectionName][varName].insert(value);
+
+                callback(sectionName, varName, value);
+
                 std::cout << "Adding var:" << varName << "=" << value << std::endl;
             }
         }

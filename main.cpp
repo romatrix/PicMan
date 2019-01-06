@@ -6,6 +6,18 @@
 
 #include <unordered_set>
 
+void store(){
+    ShaSumFileManager s("dupa.txt");
+    s.scanDirectory("~/Pictures/2017");
+    s.storeCache();
+}
+
+void load(){
+    ShaSumFileManager s("dupa.txt");
+    s.loadCache();
+}
+
+
 int main()
 {
 //    SettingsFile sf("settings.txt");
@@ -15,9 +27,10 @@ int main()
     //std::stringstream ss = SystemCmd::execute("exif -t DateTimeOriginal ~/Pictures/2018/czerwiec/torun/DSC_5524.JPG | grep 'Value\\|^\\./'");
     //std::cout << ss.str() << std::endl;
 
-    ShaSumFileManager s("dupa.txt");
-    s.scanDirectory("~/Pictures/2017");
-    s.storeCache();
+    //ShaSumFileManager s("dupa.txt");
+    //s.scanDirectory("~/Pictures/2017");
+    //s.storeCache();
+    load();
 
     //ShaSumFile s("~/Pictures", "DSC 2864.jpg");
 

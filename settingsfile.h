@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <functional>
 
 using namespace std;
 
@@ -20,9 +21,9 @@ public:
     vector<string> getVariable(string sectionName, string variableName) const;
     const SectionEntry getSection(std::string section);
     void store();
+    void load(std::function<void (const string &, const string &, const string &)> callback);
     private:
     //void parseLine(std::string line);
-    void load();
 private:
     std::unordered_map<string, unordered_map<string, set<string>> > sections;
     std::string m_file;

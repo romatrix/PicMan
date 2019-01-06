@@ -5,6 +5,18 @@
 #include <iostream>
 #include "systemcmd.h"
 
+//ShaSumFile::ShaSumFile(ShaSumFile &&file):m_path(file.m_path),
+//                                          m_fileName(file.m_fileName),
+//                                          m_sha(file.m_sha),
+//                                          m_creationDate(file.m_creationDate){
+//}
+
+//ShaSumFile &ShaSumFile::operator =(ShaSumFile &&file){
+//    m_sha = file.m_sha;
+//    m_creationDate = file.m_creationDate;
+//    return *this;
+//}
+
 const std::string &ShaSumFile::getSha(){
     if(m_sha != ""){
         return m_sha;
@@ -53,6 +65,7 @@ bool ShaSumFile::store(std::ofstream& stream) const
 
 int ShaSumFile::addDuplicate(ShaSumFile&& duplicate)
 {
+    std::cout << __FUNCTION__ << std::endl;
     m_duplicates.push_back(std::move(duplicate));
     return m_duplicates.size();
 }

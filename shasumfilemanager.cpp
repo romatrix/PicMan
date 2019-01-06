@@ -73,6 +73,8 @@ bool ShaSumFileManager::storeCache()
 }
 
 void ShaSumFileManager::storeDuplicates(SettingsFile& cacheFile, const std::string& section, const std::vector<ShaSumFile>& duplicates){
+    cacheFile.addVariable(section,"duplicate_count", std::to_string(duplicates.size()));
+
     for(int i = 0; i < duplicates.size(); ++i){
         cacheFile.addVariable(section, "file_name_duplicated" + std::to_string(i + 1), duplicates[i].getFileName());
         cacheFile.addVariable(section, "directory_name_duplicated" + std::to_string(i + 1), duplicates[i].getDirectoryName());
@@ -81,6 +83,69 @@ void ShaSumFileManager::storeDuplicates(SettingsFile& cacheFile, const std::stri
 
 bool ShaSumFileManager::loadCache()
 {
+    SettingsFile cacheFile(m_cacheFile);
+
+    std::string fileName;
+    std::string path;
+    std::string sha;
+    std::string creationDate;
+    std::string duplicateCount;
+
+    std::map<string, string> duplicatedFiles;
+    std::map<string, string> duplicatedDirectories;
+    std::string lastSection;
+    const std::string duplicatedFileName = "file_name_duplicated";
+    const int duplicatedFileNameLen = duplicatedFileName.length();
+    const std::string duplicatedDirectoryName = "directory_name_duplicated";
+    const int duplicatedDirectoryNameLen = duplicatedDirectoryName.length();
+
+    //ShaSumFile shaFile(path, fileName, sha, creationDate);
+
+    auto callback = [&,this](const std::string& section, const std::string& variable, const std::string& value){
+        if(not variable.empty()){
+            lastSection = section;
+
+            if(variable == "file_name"){
+                fileName = value;
+            } else if(variable == "directory_name"){
+                path = value;
+            } else if( variable.find("file_name_duplicated") != std::string::npos){
+                std::cout << "adding file_name_duplicated" << std::endl;
+                duplicatedFiles[variable.substr(duplicatedFileNameLen)] = value;
+            } else if(variable.find("directory_name_duplicated")!= std::string::npos){
+                std::cout << "adding directory_name_duplicated" << std::endl;
+                duplicatedDirectories[variable.substr(duplicatedDirectoryNameLen)] = value;
+            }
+
+            if(fileName != "" && path != ""){
+                int pos = section.find('_');
+                creationDate = section.substr(0, pos);
+                sha = section.substr(pos + 1);
+                std::pair<const string &, const string &> pathSplit = splitPath(path + "/" + fileName);
+                m_shaSumFileMap.emplace(std::make_pair(section, ShaSumFile(pathSplit.first, pathSplit.second, sha, creationDate)));
+                //m_shaSumFileMap[section] = std::move(ShaSumFile(pathSplit.first, pathSplit.second, sha, creationDate));
+
+                fileName = "";
+                path = "";
+                creationDate = "";
+                sha = "";
+            }
+        } else {
+            auto shaFileIt = m_shaSumFileMap.find(lastSection);
+
+            if(shaFileIt != m_shaSumFileMap.end()){
+                std::cout << "adding duplicates to lastSection, dup count:" << duplicatedFiles.size() << std::endl;
+
+                for(auto i =0; i < duplicatedFiles.size(); ++i){
+                    shaFileIt->second.addDuplicate(ShaSumFile(duplicatedDirectories[std::to_string(i)],
+                                                              duplicatedFiles[std::to_string(i)],
+                                                              sha,
+                                                              creationDate));
+                }
+            }
+        }
+    };
+    cacheFile.load(callback);
 //    std::ifstream stream;
 //    stream.exceptions(std::ifstream::failbit);
 
