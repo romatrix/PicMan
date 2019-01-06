@@ -110,10 +110,10 @@ bool ShaSumFileManager::loadCache()
             } else if(variable == "directory_name"){
                 path = value;
             } else if( variable.find("file_name_duplicated") != std::string::npos){
-                std::cout << "adding file_name_duplicated" << std::endl;
+                std::cout << "Found file_name_duplicated" << std::endl;
                 duplicatedFiles[variable.substr(duplicatedFileNameLen)] = value;
             } else if(variable.find("directory_name_duplicated")!= std::string::npos){
-                std::cout << "adding directory_name_duplicated" << std::endl;
+                std::cout << "Found directory_name_duplicated" << std::endl;
                 duplicatedDirectories[variable.substr(duplicatedDirectoryNameLen)] = value;
             }
 
@@ -133,8 +133,8 @@ bool ShaSumFileManager::loadCache()
         } else {
             auto shaFileIt = m_shaSumFileMap.find(lastSection);
 
-            if(shaFileIt != m_shaSumFileMap.end()){
-                std::cout << "adding duplicates to lastSection, dup count:" << duplicatedFiles.size() << std::endl;
+            if(shaFileIt != m_shaSumFileMap.end() && duplicatedFiles.size()){
+                std::cout << "Adding duplicates to lastSection, dup count:" << duplicatedFiles.size() << std::endl;
 
                 for(auto i =0; i < duplicatedFiles.size(); ++i){
                     shaFileIt->second.addDuplicate(ShaSumFile(duplicatedDirectories[std::to_string(i)],
@@ -142,6 +142,9 @@ bool ShaSumFileManager::loadCache()
                                                               sha,
                                                               creationDate));
                 }
+
+                duplicatedFiles.clear();
+                duplicatedDirectories.clear();
             }
         }
     };
@@ -172,6 +175,6 @@ std::pair<const string &, const string &> ShaSumFileManager::splitPath(string pa
     std::string file = path.substr(pos + 1);
     std::string directory = path.substr(0, pos);
 
-    std::cout << path.length() << " pos: " << pos << " directory:" << directory << " file:" << file <<  std::endl;
+    //std::cout << "directory:" << directory << " file:" << file <<  std::endl;
     return {*(m_directories.insert(directory).first), *(m_files.insert(file).first)};
 }

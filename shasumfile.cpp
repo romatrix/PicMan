@@ -65,7 +65,7 @@ bool ShaSumFile::store(std::ofstream& stream) const
 
 int ShaSumFile::addDuplicate(ShaSumFile&& duplicate)
 {
-    std::cout << __FUNCTION__ << std::endl;
+    //std::cout << __FUNCTION__ << std::endl;
     m_duplicates.push_back(std::move(duplicate));
     return m_duplicates.size();
 }

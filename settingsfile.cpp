@@ -101,7 +101,7 @@ void SettingsFile::load(std::function<void(const std::string& section, const std
 
             if(line[0] == '[' && line[line.length() - 1] == ']'){
                 sectionName = line.substr(1, line.length() - 2);
-                std::cout << "Found section:" << sectionName << std::endl;
+                std::cout << "\nFound section:" << sectionName << std::endl;
 
                 std::string varName;
                 std::string value;
@@ -117,9 +117,9 @@ void SettingsFile::load(std::function<void(const std::string& section, const std
                 std::string value = line.substr(pos + 1);
                 sections[sectionName][varName].insert(value);
 
+                std::cout << "Adding var:" << varName << "=" << value << std::endl;
                 callback(sectionName, varName, value);
 
-                std::cout << "Adding var:" << varName << "=" << value << std::endl;
             }
         }
     }catch(...){
